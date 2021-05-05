@@ -22,7 +22,7 @@ config = {
     "phpunit": {
         "mostDatabases": {
             "phpVersions": [
-                "7.2",
+                "7.3",
             ],
             # Gather coverage for all databases except Oracle
             "coverage": True,
@@ -41,7 +41,7 @@ config = {
         },
         "slowDatabases": {
             "phpVersions": [
-                "7.2",
+                "7.3",
             ],
             # Oracle takes a long time to start and run
             # So do not collect coverage for that
@@ -53,7 +53,6 @@ config = {
         },
         "reducedDatabases": {
             "phpVersions": [
-                "7.3",
                 "7.4",
             ],
             "databases": [
@@ -63,7 +62,7 @@ config = {
         },
         "external-samba-windows": {
             "phpVersions": [
-                "7.2",
+                "7.3",
                 "7.4",
             ],
             "databases": [
@@ -83,7 +82,7 @@ config = {
         },
         "external-other": {
             "phpVersions": [
-                "7.2",
+                "7.3",
                 "7.4",
             ],
             "databases": [
@@ -401,7 +400,7 @@ def dependencies(ctx):
         return pipelines
 
     default = {
-        "phpVersions": ["7.2"],
+        "phpVersions": ["7.3"],
     }
 
     if "defaults" in config:
@@ -769,7 +768,7 @@ def phan():
         return pipelines
 
     default = {
-        "phpVersions": ["7.2", "7.3", "7.4"],
+        "phpVersions": ["7.3", "7.4"],
         "logLevel": "2",
     }
 
@@ -842,7 +841,7 @@ def litmus():
         return pipelines
 
     default = {
-        "phpVersions": ["7.2", "7.3", "7.4"],
+        "phpVersions": ["7.3", "7.4"],
         "logLevel": "2",
         "useHttps": True,
     }
@@ -1002,7 +1001,7 @@ def dav():
         return pipelines
 
     default = {
-        "phpVersions": ["7.2", "7.3", "7.4"],
+        "phpVersions": ["7.3", "7.4"],
         "logLevel": "2",
     }
 
@@ -1094,7 +1093,7 @@ def javascript(ctx, withCoverage):
     default = {
         "coverage": True,
         "logLevel": "2",
-        "phpVersion": "7.2",
+        "phpVersion": "7.4",
         "skip": False,
     }
 
@@ -1196,7 +1195,7 @@ def phpTests(ctx, testType, withCoverage):
     errorFound = False
 
     default = {
-        "phpVersions": ["7.2", "7.3", "7.4"],
+        "phpVersions": ["7.3", "7.4"],
         "databases": [
             "sqlite",
             "mariadb:10.2",
@@ -1447,7 +1446,7 @@ def acceptance(ctx):
         "browsers": ["chrome"],
         "phpVersions": ["7.4"],
         "databases": ["mariadb:10.2"],
-        "federatedPhpVersion": "7.2",
+        "federatedPhpVersion": "7.4",
         "federatedServerNeeded": False,
         "federatedDb": "",
         "filterTags": "",
