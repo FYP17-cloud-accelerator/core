@@ -131,6 +131,12 @@ class TransferOwnership extends Command {
 				's',
 				InputOption::VALUE_NONE,
 				'always confirm to continue in case of skipped shares.'
+			)
+			->addOption(
+				'destination-use-user-folder',
+				'u',
+				InputOption::VALUE_NONE,
+				'if destination user never logged in and thus has no mounts transfer directly to top-level user folder.'
 			);
 	}
 
@@ -164,9 +170,6 @@ class TransferOwnership extends Command {
 			return 2;
 		}
 
-		// use a date format compatible across client OS
-		$date = \date('Ymd_his');
-		$this->finalTarget = "$this->destinationUser/files/transferred from $this->sourceUser on $date";
 
 		// setup filesystem
 		Filesystem::initMountPoints($this->sourceUser);
@@ -206,6 +209,17 @@ class TransferOwnership extends Command {
 				$output->writeln("<comment>Execution terminated</comment>");
 				return 1;
 			}
+		}
+		// prepare and validate final destination
+		if ($input->getOption('destination-use-user-folder') && $destinationUserObject->getLastLogin() === 0) {
+			$this->finalTarget = "$this->destinationUser/files";
+		} else if ($input->getOption('destination-use-user-folder') && $destinationUserObject->getLastLogin() != 0) {
+			$output->writeln("<comment>Cannot use top-level user folder as destination folder if user aleardy logged in</comment>");
+			return 1;
+		} else {
+			// use a date format compatible across client OS
+			$date = \date('Ymd_his');
+			$this->finalTarget = "$this->destinationUser/files/transferred from $this->sourceUser on $date";
 		}
 
 		// transfer the files
