@@ -177,6 +177,7 @@ class Base {
 		if ($data === false) {
 			return false;
 		} else {
+			echo "<br>fetchPage template: ".$this->template.", additionalParams: ".$additionalParams;
 			print $data;
 			return true;
 		}
@@ -224,6 +225,7 @@ class Base {
 		\ob_start();
 		try {
 			include $file;
+			echo "<br>file: ".$file;
 			$data = \ob_get_contents();
 		} catch (\Exception $e) {
 			@\ob_end_clean();

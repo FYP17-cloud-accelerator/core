@@ -128,16 +128,21 @@ class OC_User {
 	public static function setupBackends() {
 		OC_App::loadApps(['prelogin']);
 		$backends = \OC::$server->getSystemConfig()->getValue('user_backends', []);
+		echo ("<br>backends: ".$backends);
 		if (isset($backends['default']) && !$backends['default']) {
 			// clear default backends
 			self::clearBackends();
 		}
+		echo("<br>Hi -- before foreach in setupBackends()");
 		foreach ($backends as $i => $config) {
+			echo("<br>Hi -- inside foreach in setupBackends()");
 			if (!\is_array($config)) {
 				continue;
 			}
 			$class = $config['class'];
+			echo ("<br>class: ".$class);
 			$arguments = $config['arguments'];
+			echo ("<br>arguments: ".$arguments);
 			if (\class_exists($class)) {
 				if (\array_search($i, self::$_setupedBackends) === false) {
 					// make a reflection object
@@ -154,6 +159,7 @@ class OC_User {
 				\OCP\Util::writeLog('core', 'User backend ' . $class . ' not found.', \OCP\Util::ERROR);
 			}
 		}
+		echo("<br>Hi -- after foreach in setupBackends()");
 	}
 
 	/**

@@ -418,6 +418,8 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 			);
 		});
 		$this->registerService('SystemConfig', function ($c) use ($config) {
+			echo("<br>SystemConfig: ");
+			print_r($config);
 			return new \OC\SystemConfig($config);
 		});
 		$this->registerService('AppConfig', function (Server $c) {

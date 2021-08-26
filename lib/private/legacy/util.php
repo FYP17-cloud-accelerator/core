@@ -80,8 +80,10 @@ class OC_Util {
 	}
 
 	private static function initLocalStorageRootFS() {
+		print_r("<br>Hi -- start in initObjectStoreRootFS()");
 		// mount local file backend as root
 		$configDataDirectory = \OC::$server->getSystemConfig()->getValue("datadirectory", OC::$SERVERROOT . "/data");
+		print_r("<br>configDataDirectory: ".$configDataDirectory);
 		//first set up the local "root" storage
 		\OC\Files\Filesystem::initMountManager();
 		if (!self::$rootMounted) {
@@ -98,6 +100,7 @@ class OC_Util {
 	 * @param array $config containing 'class' and optional 'arguments'
 	 */
 	private static function initObjectStoreRootFS($config) {
+		print_r("<br>Hi -- start in initObjectStoreRootFS(), config: ".$config);
 		// check misconfiguration
 		if (empty($config['class'])) {
 			\OCP\Util::writeLog('files', 'No class given for objectstore', \OCP\Util::ERROR);
@@ -132,6 +135,7 @@ class OC_Util {
 	 * @description configure the initial filesystem based on the configuration
 	 */
 	public static function setupFS($user = '') {
+		echo("<br>Hi -- start in setupFS(), fsSetup: ".self::$fsSetup);
 		//setting up the filesystem twice can only lead to trouble
 		if (self::$fsSetup) {
 			return false;
@@ -257,6 +261,7 @@ class OC_Util {
 			if (!\is_array($readOnlyGroups)) {
 				$readOnlyGroups = [];
 			}
+			print_r("<br>readOnlyGroups: ".$readOnlyGroups);
 			$readOnlyGroupMemberships = [];
 			if ($readOnlyGroups) {
 				$userGroups = \array_keys(
@@ -306,6 +311,7 @@ class OC_Util {
 		//if we aren't logged in, there is no use to set up the filesystem
 		if ($user != "") {
 			$userDir = '/' . $user . '/files';
+			print_r("<br>userDir: ".$userDir);
 
 			//jail the user into his "home" directory
 			\OC\Files\Filesystem::init($user, $userDir);

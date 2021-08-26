@@ -98,6 +98,8 @@ class OC_App {
 	 * if $types is set, only apps of those types will be loaded
 	 */
 	public static function loadApps($types = null) {
+		echo("<br>Hi -- start in loadApps(), types: ");
+		print_r($types);
 		if (\is_array($types) && !\array_diff($types, self::$loadedTypes)) {
 			return true;
 		}
@@ -132,7 +134,10 @@ class OC_App {
 			if (\OC::$server->getUserSession()) {
 				$request = \OC::$server->getRequest();
 				$session = \OC::$server->getUserSession();
+
 				$davUser = \OC::$server->getUserSession()->getSession()->get(\OCA\DAV\Connector\Sabre\Auth::DAV_AUTHENTICATED);
+				echo("<br>davUser: ");
+				print_r($davUser);
 				if ($davUser === null) {
 					$session->validateSession();
 				} else {

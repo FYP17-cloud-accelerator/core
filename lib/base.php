@@ -501,6 +501,7 @@ class OC {
 	public static function init() {
 		// calculate the root directories
 		OC::$SERVERROOT = \str_replace("\\", '/', \substr(__DIR__, 0, -4));
+		echo("SERVERROOT: ".OC::$SERVERROOT);
 
 		// register autoloader
 		$loaderStart = \microtime(true);
@@ -508,6 +509,7 @@ class OC {
 
 		// setup 3rdparty autoloader
 		$vendorAutoLoad = OC::$SERVERROOT . '/lib/composer/autoload.php';
+		echo("<br>vendorAutoLoad: ".$vendorAutoLoad);
 		if (!\file_exists($vendorAutoLoad)) {
 			\printf('Composer autoloader not found, unable to continue. Please run "make".');
 			exit();
@@ -597,6 +599,7 @@ class OC {
 
 		// incognito mode for now
 		$uid = \OC::$server->getSession()->get('user_id');
+		echo("<br>uid: ".$uid);
 		\OC::$server->getSession()->set('user_id', null);
 
 		self::checkConfig();
@@ -700,6 +703,8 @@ class OC {
 
 		$request = \OC::$server->getRequest();
 		$host = $request->getInsecureServerHost();
+		echo("<br>host: ".$host);
+
 		/**
 		 * if the host passed in headers isn't trusted
 		 * FIXME: Should not be in here at all :see_no_evil:
@@ -866,12 +871,15 @@ class OC {
 		}
 
 		$request = \OC::$server->getRequest();
+		// print_r("<br>request: ");
+		// print_r($request);
 		// Check if requested URL matches 'index.php/occ'
 		$isOccControllerRequested = \preg_match('|/index\.php$|', $request->getScriptName()) === 1
 			&& \strpos($request->getPathInfo(), '/occ/') === 0;
 
 		$needUpgrade = false;
 		$requestPath = $request->getRawPathInfo();
+		echo ("<br>requestPath: ".$requestPath);
 		if (\substr($requestPath, -3) !== '.js') { // we need these files during the upgrade
 			self::checkMaintenanceMode($request);
 			$needUpgrade = self::checkUpgrade(!$isOccControllerRequested);
@@ -915,6 +923,7 @@ class OC {
 				OC_App::loadApps(['filesystem', 'logging']);
 			}
 		}
+		echo ("<br>isLoggedIn: ".$userSession->isLoggedIn());
 
 		if (!self::$CLI) {
 			try {
@@ -925,7 +934,8 @@ class OC {
 				self::checkSingleUserMode();
 				OC_Util::setupFS();
 				OC::$server->getRouter()->match(\OC::$server->getRequest()->getRawPathInfo());
-				return;
+				echo ("<br>getRouter: ".$server);
+				return; // return here.		
 			} catch (\OC\NeedsUpdateException $e) {
 				if ($isOccControllerRequested && $needUpgrade) {
 					OC::$server->getRouter()->match(\OC::$server->getRequest()->getRawPathInfo());

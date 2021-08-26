@@ -245,6 +245,7 @@ class Session implements IUserSession, Emitter {
 	 * - For browsers, the session token validity is checked
 	 */
 	public function validateSession() {
+		echo("<br>validating session...");
 		if (!$this->getUser()) {
 			return;
 		}
